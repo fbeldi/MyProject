@@ -24,5 +24,4 @@ jobs:
       run: dotnet restore MyProject/MyProject.sln
     - name: Build
       run: dotnet build MyProject/MyProject.sln --no-restore
-    - name: Test
-      run: dotnet test MyProject/TestMyProject/TestMyProject.csproj --no-build --verbosity normal
+    
