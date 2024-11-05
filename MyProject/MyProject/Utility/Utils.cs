@@ -22,7 +22,7 @@ namespace MyProject.Utility
                 // Set the players list in the cache with an optional expiration
                 var cacheEntryOptions = new MemoryCacheEntryOptions
                 {
-                    SlidingExpiration = TimeSpan.FromMinutes(30) // Cache expires after 30 mins of inactivity
+                    SlidingExpiration = TimeSpan.FromMinutes(60)
                 };
                 _memoryCache.Set(PlayersCacheKey, players, cacheEntryOptions);
             }

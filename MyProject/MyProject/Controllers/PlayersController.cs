@@ -28,9 +28,6 @@ namespace MyProject.Controllers
             {
                 _logger.LogInformation("Fetching players from cache or external source.");
                 var players = await Utils.GetPlayersFromCacheAsync(_httpClient, _memoryCache);
-                // Fetch JSON data from the URL
-                //var response = await _httpClient.GetStringAsync(url);
-                //var playersList = JsonConvert.DeserializeObject<PlayersList>(response);
 
                 // Sort the players by ID
                 var sortedPlayers = players?.OrderBy(p => p.Id).ToList();
@@ -53,11 +50,7 @@ namespace MyProject.Controllers
                 _logger.LogInformation("Fetching player with ID {Id}.", id);
                 var players = await Utils.GetPlayersFromCacheAsync(_httpClient, _memoryCache);
 
-                // Fetch JSON data from the URL
-                //var response = await _httpClient.GetStringAsync(url);
-                //var playersList = JsonConvert.DeserializeObject<PlayersList>(response);
-
-                // Find the player with the specified ID
+                // Find the player with ID
                 var player = players?.FirstOrDefault(p => p.Id == id);
 
                 if (player == null)
@@ -82,7 +75,7 @@ namespace MyProject.Controllers
                 _logger.LogInformation($"Attempting to delete player with ID {id}.");
                 var players = await Utils.GetPlayersFromCacheAsync(_httpClient, _memoryCache);
 
-                // Find the player with the specified ID
+                // Find the player with ID
                 var player = players?.FirstOrDefault(p => p.Id == id);
 
                 if (player == null)
@@ -91,7 +84,7 @@ namespace MyProject.Controllers
                     return NotFound($"Player with ID {id} not found.");
                 }
 
-                // Simulate deletion by removing the player from the in-memory list
+                //remove the player from the memory list
                 players?.Remove(player);
                 _memoryCache.Set("Key##@0", players);
 
