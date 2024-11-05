@@ -17,15 +17,13 @@ namespace TestMyProject.Controllers
     {
 
         private readonly Mock<IMemoryCache> _mockMemoryCache;
-        private readonly Mock<IHttpClientFactory> _mockHttpClientFactory;
         private readonly ILogger<PlayersController> _logger;
         private readonly HttpClient _httpClient;
 
         public PlayersControllerTests()
         {
             _mockMemoryCache = new Mock<IMemoryCache>();
-            _mockHttpClientFactory = new Mock<IHttpClientFactory>();
-            _logger = new NullLogger<PlayersController>(); // Using a null logger for testing
+            _logger = new NullLogger<PlayersController>(); 
             _httpClient = new HttpClient();
         }
 
@@ -39,13 +37,15 @@ namespace TestMyProject.Controllers
                 new Player { Id = 2, FirstName = "Roger", LastName = "Federer" }
             };
 
-            // Setup memory cache to return mockPlayers
             _mockMemoryCache
-                .Setup(mc => mc.TryGetValue(It.IsAny<object>(), out mockPlayers))
-                .Returns(true);
+                            .Setup(mc => mc.TryGetValue(It.IsAny<object>(), out It.Ref<object>.IsAny))
+                            .Returns((object key, out object cachedValue) =>
+                            {
+                                cachedValue = mockPlayers;
+                                return true;
+                            });
 
             var controller = new PlayersController(_httpClient, _mockMemoryCache.Object, _logger);
-            //var controller = new PlayersController(_mockHttpClientFactory.Object, _mockMemoryCache.Object, _logger);
 
             // Act
             var result = await controller.GetPlayers();
@@ -68,11 +68,14 @@ namespace TestMyProject.Controllers
             };
 
             _mockMemoryCache
-                .Setup(mc => mc.TryGetValue(It.IsAny<object>(), out mockPlayers))
-                .Returns(true);
+                           .Setup(mc => mc.TryGetValue(It.IsAny<object>(), out It.Ref<object>.IsAny))
+                           .Returns((object key, out object cachedValue) =>
+                           {
+                               cachedValue = mockPlayers;
+                               return true;
+                           });
 
             var controller = new PlayersController(_httpClient, _mockMemoryCache.Object, _logger);
-            //var controller = new PlayersController(_mockHttpClientFactory.Object, _mockMemoryCache.Object, _logger);
 
             // Act
             var result = await controller.GetPlayerById(playerId);
@@ -95,11 +98,14 @@ namespace TestMyProject.Controllers
             };
 
             _mockMemoryCache
-                .Setup(mc => mc.TryGetValue(It.IsAny<object>(), out mockPlayers))
-                .Returns(true);
+                           .Setup(mc => mc.TryGetValue(It.IsAny<object>(), out It.Ref<object>.IsAny))
+                           .Returns((object key, out object cachedValue) =>
+                           {
+                               cachedValue = mockPlayers;
+                               return true;
+                           });
 
             var controller = new PlayersController(_httpClient, _mockMemoryCache.Object, _logger);
-            //var controller = new PlayersController(_mockHttpClientFactory.Object, _mockMemoryCache.Object, _logger);
 
             // Act
             var result = await controller.GetPlayerById(playerId);
